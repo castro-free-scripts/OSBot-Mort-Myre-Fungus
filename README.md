@@ -1,5 +1,7 @@
 # OSBot-Mort-Myre-Fungus
 
+Get the latest version jar here: https://github.com/castro-free-scripts/OSBot-Mort-Myre-Fungus/releases/ <br>
+
 A **FREE** open source basic Mort myre fungus picking script for OSBot
 
 **How to start** <br>
