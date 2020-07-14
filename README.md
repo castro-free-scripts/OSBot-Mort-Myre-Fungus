@@ -17,5 +17,6 @@ Supports Arceuus spellbook teleport **[UNTESTED]** <br>
 Replenishes stats in Clan Wars Free-for-all portal <br>
 
 # Disclaimer
+I am a noob.
 I do not script often for OSBot, so some things may not be done in the most efficent/best way.<br>
 Feel free to clone/pr this project etc.
