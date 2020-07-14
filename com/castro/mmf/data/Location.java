@@ -49,6 +49,7 @@ public class Location {
     public enum Misc {
 
         CLAN_WARS(new Area(3346, 3180, 3396, 3132)),
+        INSIDE_CLAN_WARS_PORTAL(new Area(3298, 4772, 3356, 4736)),
         SWAMP(new Area(3402, 3481, 3496, 3321));
 
         private final Area area;

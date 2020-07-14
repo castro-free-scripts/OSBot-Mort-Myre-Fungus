@@ -8,6 +8,7 @@ import com.castro.mmf.main.framework.Task;
 import org.osbot.rs07.api.filter.ActionFilter;
 import org.osbot.rs07.api.filter.AreaFilter;
 import org.osbot.rs07.api.filter.NameFilter;
+import org.osbot.rs07.api.filter.PositionFilter;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.model.RS2Object;
@@ -23,14 +24,13 @@ public class Pick extends Task {
     @Override
     public boolean validate() {
         RS2Object fungusOnLog = api.getObjects().closest(new AreaFilter<>(Location.Spot.CURRENT.getArea()), new NameFilter<>("Fungi on log"));
-        RS2Object exitPortal = api.getObjects().closest(new NameFilter<>("Portal"), new ActionFilter<>("Exit"));
         return Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && api.getInventory().contains(Setting.teleport) && api.getEquipment().getItem(x -> x.getName().contains("Ring of dueling")) != null
                 ||
                 Location.Misc.SWAMP.getArea().contains(api.myPlayer()) && !api.getInventory().isFull() && api.getSkills().getDynamic(Skill.PRAYER) == 0 && fungusOnLog != null
                 ||
                 Location.Misc.SWAMP.getArea().contains(api.myPlayer()) && !api.getInventory().isFull() && api.getSkills().getDynamic(Skill.PRAYER) > 0
                 ||
-                exitPortal != null;
+                Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Pick extends Task {
         if (api.getBank().isOpen()) {
             Painting.status = "Closing bank";
             try {
-                MethodProvider.sleep(MethodProvider.random(650, 2750));
+                MethodProvider.sleep(MethodProvider.random(250, 450));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,12 +52,12 @@ public class Pick extends Task {
             if (freeForAllPortal != null && freeForAllPortal.getPosition().distance(api.myPlayer()) <= 10) {
                 Painting.status = "Entering " + freeForAllPortal.getName();
                 try {
-                    MethodProvider.sleep(MethodProvider.random(450, 1250));
+                    MethodProvider.sleep(MethodProvider.random(350, 750));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 if (freeForAllPortal.interact("Enter")) {
-                    Sleep.sleepUntil(() -> !Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()), 15000);
+                    Sleep.sleepUntil(() -> Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer()), 15000);
                 }
                 return;
             } else {
@@ -66,10 +66,9 @@ public class Pick extends Task {
             }
             return;
         }
-        RS2Object exitPortal = api.getObjects().closest(new NameFilter<>("Portal"), new ActionFilter<>("Exit"));
-        if (exitPortal != null) {
+        if (Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())) {
             try {
-                MethodProvider.sleep(MethodProvider.random(650, 1250));
+                MethodProvider.sleep(MethodProvider.random(250, 650));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -90,13 +89,13 @@ public class Pick extends Task {
         RS2Object fungusOnLog = api.getObjects().closest(new AreaFilter<>(Location.Spot.CURRENT.getArea()), new NameFilter<>("Fungi on log"));
         if(fungusOnLog != null){
             Painting.status = "Picking "+fungusOnLog.getName();
-            if(fungusOnLog.interact("Pick")){
-                try {
-                    MethodProvider.sleep(MethodProvider.random(450,750));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if(fungusOnLog.interact("Pick")) {
+                    try {
+                        MethodProvider.sleep(MethodProvider.random(450, 750));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
             return;
         }
         if (!Location.Spot.CURRENT.getArea().contains(api.myPlayer())) {
@@ -108,16 +107,27 @@ public class Pick extends Task {
             Painting.status = "Moving to optimal blooming position";
             if(new Position(Location.Tile.CURRENT.getPosition()).interact(api.bot,"Walk here")){
                 try {
-                    MethodProvider.sleep(MethodProvider.random(350,850));
+                    MethodProvider.sleep(MethodProvider.random(125,250));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+                if(api.getEquipment().getItem("Silver sickle (b)").hover()) {
+                    try {
+                        MethodProvider.sleep(MethodProvider.random(350, 850));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             return;
         }
         Painting.status = "Casting bloom";
         if(api.getEquipment().interactWithNameThatContains("Bloom","Silver sickle (b)")){
-            Sleep.sleepUntil(()-> fungusOnLog != null, 1750);
+            try {
+                MethodProvider.sleep(MethodProvider.random(1050,1550));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

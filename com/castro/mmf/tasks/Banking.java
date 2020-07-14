@@ -12,8 +12,6 @@ import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 
-import javax.sound.sampled.FloatControl;
-
 public class Banking extends Task {
     public Banking(MethodProvider api) {
         super(api);
@@ -50,29 +48,21 @@ public class Banking extends Task {
         if (!api.getBank().isOpen()) {
             Painting.status = "Opening bank";
             try {
-                if (api.getBank().open()) {
-                    try {
-                        MethodProvider.sleep(MethodProvider.random(650, 1250));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }                }
+                api.getBank().open();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            return;
         }
         if(api.getInventory().contains("Mort myre fungus")){
             Painting.status = "Depositing Mort myre fungus";
             try {
-                MethodProvider.sleep(MethodProvider.random(450,950));
+                MethodProvider.sleep(MethodProvider.random(350,650));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if(api.getBank().depositAll("Mort myre fungus")){
-                try {
-                    MethodProvider.sleep(MethodProvider.random(650,950));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+               Sleep.sleepUntil(()-> !api.getInventory().contains("Mort myre fungus"),1250);
             }
             return;
         }
@@ -80,7 +70,7 @@ public class Banking extends Task {
             if (!api.getInventory().contains(x -> x.getName().contains("Ring of dueling"))) {
                 Painting.status = "Withdrawing Ring of dueling";
                 try {
-                    MethodProvider.sleep(MethodProvider.random(650, 1250));
+                    MethodProvider.sleep(MethodProvider.random(350, 650));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -93,7 +83,7 @@ public class Banking extends Task {
             if (ringOfDueling != null) {
                 Painting.status = "Equipping " + ringOfDueling.getName();
                 try {
-                    MethodProvider.sleep(MethodProvider.random(650, 1250));
+                    MethodProvider.sleep(MethodProvider.random(350, 750));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -112,6 +102,8 @@ public class Banking extends Task {
                     e.printStackTrace();
                 }
                 api.getBank().withdraw(Setting.teleport[i], i + 1);
+                int finalI = i;
+                Sleep.sleepUntil(()-> api.getInventory().contains(Setting.teleport[finalI]),1250);
             }
             return;
         }
