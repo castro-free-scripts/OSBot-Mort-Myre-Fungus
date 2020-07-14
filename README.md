@@ -1,6 +1,6 @@
 # OSBot-Mort-Myre-Fungus
 
-A **FREE** open source Mort myre fungus script for OSBot
+A **FREE** open source basic Mort myre fungus picking script for OSBot
 
 **How to start** <br>
 Start at Clan wars with a Silver sickle (b) equipped. <br>
