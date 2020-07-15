@@ -20,15 +20,15 @@ public class Banking extends Task {
     @Override
     public boolean validate() {
         RS2Object fungusOnLog = api.getObjects().closest(new NameFilter<>("Fungus on log"), new AreaFilter<>(Location.Spot.CURRENT.getArea()));
-        return api.getSkills().getDynamic(Skill.PRAYER) == 0 && api.getInventory().isFull()
+        return api.getSkills().getDynamic(Skill.PRAYER) == 0 && api.getInventory().isFull() && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
                 ||
-                api.getSkills().getDynamic(Skill.PRAYER) == 0 && fungusOnLog == null && !Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer())
+                api.getSkills().getDynamic(Skill.PRAYER) == 0 && fungusOnLog == null && !Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
                 ||
-                !api.getInventory().contains(Setting.teleport) && Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer())
+                !api.getInventory().contains(Setting.teleport) && Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
                 ||
-                api.getInventory().isFull()
+                api.getInventory().isFull() && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
                 ||
-                api.getSkills().getDynamic(Skill.HITPOINTS) <= Setting.healthToTeleportAt && !api.getInventory().contains(Setting.teleport);
+                api.getSkills().getDynamic(Skill.HITPOINTS) <= Setting.healthToTeleportAt && !api.getInventory().contains(Setting.teleport) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer());
     }
 
     @Override

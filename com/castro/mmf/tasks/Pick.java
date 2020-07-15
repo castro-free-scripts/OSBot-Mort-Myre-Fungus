@@ -90,11 +90,7 @@ public class Pick extends Task {
         if(fungusOnLog != null){
             Painting.status = "Picking "+fungusOnLog.getName();
             if(fungusOnLog.interact("Pick")) {
-                    try {
-                        MethodProvider.sleep(MethodProvider.random(450, 750));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                Sleep.sleepUntil(()-> api.myPlayer().getAnimation() == 827, 2500);
                 }
             return;
         }
