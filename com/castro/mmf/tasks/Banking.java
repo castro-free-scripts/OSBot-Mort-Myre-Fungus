@@ -54,15 +54,15 @@ public class Banking extends Task {
             }
             return;
         }
-        if(api.getInventory().contains("Mort myre fungus")){
+        if (api.getInventory().contains("Mort myre fungus")) {
             Painting.status = "Depositing Mort myre fungus";
             try {
-                MethodProvider.sleep(MethodProvider.random(350,650));
+                MethodProvider.sleep(MethodProvider.random(350, 650));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(api.getBank().depositAll("Mort myre fungus")){
-               Sleep.sleepUntil(()-> !api.getInventory().contains("Mort myre fungus"),1250);
+            if (api.getBank().depositAll("Mort myre fungus")) {
+                Sleep.sleepUntil(() -> !api.getInventory().contains("Mort myre fungus"), 1250);
             }
             return;
         }
@@ -103,7 +103,7 @@ public class Banking extends Task {
                 }
                 api.getBank().withdraw(Setting.teleport[i], i + 1);
                 int finalI = i;
-                Sleep.sleepUntil(()-> api.getInventory().contains(Setting.teleport[finalI]),1250);
+                Sleep.sleepUntil(() -> api.getInventory().contains(Setting.teleport[finalI]), 1250);
             }
             return;
         }

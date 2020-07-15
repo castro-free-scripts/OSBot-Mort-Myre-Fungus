@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 //sd
-@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.12)
+@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.13)
 public class Main extends Script implements MessageListener, Painter {
 
     ArrayList<Task> tasks = new ArrayList<Task>();
