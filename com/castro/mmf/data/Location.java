@@ -48,8 +48,8 @@ public class Location {
 
     public enum Misc {
 
-        CLAN_WARS(new Area(3346, 3180, 3396, 3132)),
-        INSIDE_CLAN_WARS_PORTAL(new Area(3298, 4772, 3356, 4736)),
+        CLAN_WARS(new Area(3124, 3619, 3155, 3646)),
+        POOL_OF_REFRESHMENT(new Area(3127, 3634, 3130, 3639)),
         SALVE_GRAVEYARD(new Area(
                 new int[][]{
                         {3413, 3456},

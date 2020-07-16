@@ -29,7 +29,7 @@ public class Pick extends Task {
                 ||
                 Location.Misc.SWAMP.getArea().contains(api.myPlayer()) && !api.getInventory().isFull() && api.getSkills().getDynamic(Skill.PRAYER) > 0
                 ||
-                Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
+                Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer()) && api.getSkills().getDynamic(Skill.PRAYER) == api.getSkills().getStatic(Skill.PRAYER)
                 ||
                 Location.Misc.SALVE_GRAVEYARD.getArea().contains(api.myPlayer()) && api.getSkills().getDynamic(Skill.HITPOINTS) > Setting.healthToTeleportAt;
     }
@@ -48,26 +48,8 @@ public class Pick extends Task {
             }
             return;
         }
-        RS2Object freeForAllPortal = api.getObjects().closest(new NameFilter<>("Free-for-all portal"), new AreaFilter<>(Location.Misc.CLAN_WARS.getArea()));
-        if (Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && api.getInventory().contains(Setting.teleport)) {
-            if (freeForAllPortal != null && freeForAllPortal.getPosition().distance(api.myPlayer()) <= 10) {
-                Painting.status = "Entering " + freeForAllPortal.getName();
-                try {
-                    MethodProvider.sleep(MethodProvider.random(350, 750));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (freeForAllPortal.interact("Enter")) {
-                    Sleep.sleepUntil(() -> Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer()), 15000);
-                }
-                return;
-            } else {
-                Painting.status = "Walking towards Free-for-all portal";
-                api.getWalking().webWalk(new Position(3354, 3164, 0));
-            }
-            return;
-        }
-        if (Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())) {
+        if (Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer()) && api.getSkills().getDynamic(Skill.PRAYER) == api.getSkills().getStatic(Skill.PRAYER) && api.getSkills().getDynamic(Skill.HITPOINTS) == api.getSkills().getStatic(Skill.HITPOINTS)) {
+            Painting.status = "teleport";
             try {
                 MethodProvider.sleep(MethodProvider.random(250, 650));
             } catch (InterruptedException e) {
@@ -84,6 +66,25 @@ public class Pick extends Task {
                 if (salveGraveyardTeleport != null && salveGraveyardTeleport.interact("Break")) {
                     Sleep.sleepUntil(() -> Location.Misc.SALVE_GRAVEYARD.getArea().contains(api.myPlayer()), 15000);
                 }
+            }
+            return;
+        }
+        RS2Object poolOfRefreshment = api.getObjects().closest(new NameFilter<>("Pool of Refreshment"), new AreaFilter<>(Location.Misc.CLAN_WARS.getArea()));
+        if (Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && api.getInventory().contains(Setting.teleport)) {
+            if (poolOfRefreshment != null && poolOfRefreshment.getPosition().distance(api.myPlayer()) <= 10) {
+                Painting.status = "Drinking from " + poolOfRefreshment.getName();
+                try {
+                    MethodProvider.sleep(MethodProvider.random(350, 750));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (poolOfRefreshment.interact("Drink")) {
+                    Sleep.sleepUntil(() -> Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer()) && api.getSkills().getDynamic(Skill.PRAYER) == api.getSkills().getStatic(Skill.PRAYER) && api.getSkills().getDynamic(Skill.HITPOINTS) == api.getSkills().getStatic(Skill.HITPOINTS), 15000);
+                }
+                return;
+            } else {
+                Painting.status = "Walking towards Pool of refreshment";
+                api.getWalking().webWalk(new Position(3129, 3636, 0));
             }
             return;
         }

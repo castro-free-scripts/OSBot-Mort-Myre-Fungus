@@ -7,6 +7,7 @@ import com.castro.mmf.main.framework.Sleep;
 import com.castro.mmf.main.framework.Task;
 import org.osbot.rs07.api.filter.AreaFilter;
 import org.osbot.rs07.api.filter.NameFilter;
+import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Skill;
@@ -20,15 +21,15 @@ public class Banking extends Task {
     @Override
     public boolean validate() {
         RS2Object fungusOnLog = api.getObjects().closest(new NameFilter<>("Fungus on log"), new AreaFilter<>(Location.Spot.CURRENT.getArea()));
-        return api.getSkills().getDynamic(Skill.PRAYER) == 0 && api.getInventory().isFull() && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
+        return api.getSkills().getDynamic(Skill.PRAYER) == 0 && api.getInventory().isFull() && !Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer())
                 ||
-                api.getSkills().getDynamic(Skill.PRAYER) == 0 && fungusOnLog == null && !Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
+                api.getSkills().getDynamic(Skill.PRAYER) == 0 && fungusOnLog == null && !Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer())
                 ||
-                !api.getInventory().contains(Setting.teleport) && Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
+                !api.getInventory().contains(Setting.teleport) && Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()) && !Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer())
                 ||
-                api.getInventory().isFull() && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer())
+                api.getInventory().isFull() && !Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer())
                 ||
-                api.getSkills().getDynamic(Skill.HITPOINTS) <= Setting.healthToTeleportAt && !api.getInventory().contains(Setting.teleport) && !Location.Misc.INSIDE_CLAN_WARS_PORTAL.getArea().contains(api.myPlayer());
+                api.getSkills().getDynamic(Skill.HITPOINTS) <= Setting.healthToTeleportAt && !api.getInventory().contains(Setting.teleport) && !Location.Misc.POOL_OF_REFRESHMENT.getArea().contains(api.myPlayer());
     }
 
     @Override
@@ -46,12 +47,21 @@ public class Banking extends Task {
             return;
         }
         if (!api.getBank().isOpen()) {
-            Painting.status = "Opening bank";
-            try {
-                api.getBank().open();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            RS2Object bankChest = api.getObjects().closest("Bank chest");
+            if (bankChest != null && bankChest.getPosition().distance(api.myPlayer()) < 10) {
+                Painting.status = "Opening bank";
+                try {
+                    MethodProvider.sleep(MethodProvider.random(250, 650));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (bankChest.interact("Use")) {
+                    Sleep.sleepUntil(api.getBank()::isOpen, 2750);
+                }
+                return;
             }
+            Painting.status = "Walking towards Bank chest";
+            api.getWalking().webWalk(new Position(3133, 3631, 0));
             return;
         }
         if (api.getInventory().contains("Mort myre fungus")) {

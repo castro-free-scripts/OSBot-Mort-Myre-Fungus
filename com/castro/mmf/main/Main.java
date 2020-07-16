@@ -4,7 +4,6 @@ import com.castro.mmf.data.Location;
 import com.castro.mmf.data.Painting;
 import com.castro.mmf.data.Setting;
 import com.castro.mmf.main.framework.Task;
-import com.castro.mmf.tasks.Banking;
 import com.castro.mmf.tasks.Pick;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.canvas.paint.Painter;
@@ -15,8 +14,7 @@ import org.osbot.rs07.script.ScriptManifest;
 import java.awt.*;
 import java.util.ArrayList;
 
-//sd
-@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.13)
+@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.14)
 public class Main extends Script implements MessageListener, Painter {
 
     ArrayList<Task> tasks = new ArrayList<Task>();
@@ -30,7 +28,7 @@ public class Main extends Script implements MessageListener, Painter {
             Setting.teleport = new String[]{"Law rune", "Soul rune"};
             Setting.usingRunes = true;
         }
-        tasks.add(new Banking(this));
+        //  tasks.add(new Banking(this));
         tasks.add(new Pick(this));
     }
 
