@@ -35,13 +35,13 @@ public class Banking extends Task {
     @Override
     public void execute() {
         if (!Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer())) {
-            Painting.status = "Teleporting to Clan Wars";
+            Painting.status = "Teleporting to Ferox Enclave";
             try {
                 MethodProvider.sleep(MethodProvider.random(250, 750));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (api.getEquipment().interactWithNameThatContains("Clan Wars", "Ring of dueling")) {
+            if (api.getEquipment().interactWithNameThatContains("Ferox Enclave", "Ring of dueling")) {
                 Sleep.sleepUntil(() -> Location.Misc.CLAN_WARS.getArea().contains(api.myPlayer()), 15000);
             }
             return;

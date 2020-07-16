@@ -15,7 +15,7 @@ import org.osbot.rs07.script.ScriptManifest;
 import java.awt.*;
 import java.util.ArrayList;
 
-@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.14)
+@ScriptManifest(author = "Castro", name = "cMMF", info = "The original MMF script", logo = "https://i.imgur.com/HAmh8Dv.png", version = 0.15)
 public class Main extends Script implements MessageListener, Painter {
 
     ArrayList<Task> tasks = new ArrayList<Task>();
